@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>切换型轮播</title>
+    <link rel="stylesheet" type="text/css" href="style/index.css">
+    <script rel="script" type="text/javascript" src="script/jquery-1.12.0.min.js"></script>
+    <script>
+        $(function () {
+            var i = 0;
+            var bannerCount = $(".banner .images li").size();
+            $(".banner .num li").first().addClass("on");
+
+            /*左边的按钮*/
+            $(".banner .btn_l").click(function () {
+                i++;
+                if (i == bannerCount) {
+                    i = 0;
+                }
+                $(".banner .images").stop().animate({left: - 550 * i}, 500);
+                $(".banner .num li").eq(i).addClass("on").siblings().removeClass("on");
+            });
+
+            /*右边的按钮*/
+            $(".banner .btn_r").click(function () {
+                i--;
+                if (i == -1) {
+                    i = bannerCount - 1;
+                }
+                $(".banner .images").stop().animate({left: - 550 * i}, 500);
+                $(".banner .num li").eq(i).addClass("on").siblings().removeClass("on");
+            });
+
+        })
+    </script>
+</head>
+<body>
+<div class="banner">
+<ul class="images">
+    <li><a><img src="img/1.jpg" /></a></li>
+    <li><a><img src="img/2.jpg" /></a></li>
+    <li><a><img src="img/3.jpg" /></a></li>
+    <li><a><img src="img/4.jpg" /></a></li>
+</ul>
+    <ul class="num">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+    </ul>
+<div class="btn btn_l">&lt;</div>
+<div class="btn btn_r">&gt;</div>
+</div>
+
+</body>
+</html>
