@@ -8,30 +8,68 @@
     <script>
         $(function () {
             var i = 0;
+            var clone = $(".banner .images li").first().clone();
+            $(".banner .images").append(clone);
             var bannerCount = $(".banner .images li").size();
+            for (var j = 0;j < bannerCount - 1;j++ ) {
+                $(".banner .num").append("<li></li>");
+            }
             $(".banner .num li").first().addClass("on");
+            
+            /*鼠标划入圆点*/
+            $(".banner .num li").hover(function () {
+                var index = $(this).index();
+                i = index;
+                $(".banner .images").stop().animate({left: - 550 * index}, 500);
+                $(this).addClass("on").siblings().removeClass("on");
+            });
+
+            /*自动轮播*/
+            var t = setInterval(function () {
+                i++;
+                move();
+            }, 2000);
+
+            /*对banner定时器的操作*/
+            $(".banner").hover(function () {
+                clearInterval(t);
+            }, function () {
+                t = setInterval(function () {
+                    i++;
+                    move();
+                }, 2000);
+            });
 
             /*左边的按钮*/
             $(".banner .btn_l").click(function () {
                 i++;
-                if (i == bannerCount) {
-                    i = 0;
-                }
-                $(".banner .images").stop().animate({left: - 550 * i}, 500);
-                $(".banner .num li").eq(i).addClass("on").siblings().removeClass("on");
+                move();
             });
 
             /*右边的按钮*/
             $(".banner .btn_r").click(function () {
                 i--;
-                if (i == -1) {
-                    i = bannerCount - 1;
-                }
-                $(".banner .images").stop().animate({left: - 550 * i}, 500);
-                $(".banner .num li").eq(i).addClass("on").siblings().removeClass("on");
+                move();
             });
 
-        })
+            function move() {
+                if (i == bannerCount) {
+                    $(".banner .images").css({left: 0});
+                    i = 1;
+                }
+                if (i == -1) {
+                    $(".banner .images").css({left: - 550 * (bannerCount - 1)});
+                    i = bannerCount - 2;
+                }
+                $(".banner .images").stop().animate({left: - 550 * i}, 500);
+                if (i == bannerCount - 1) {
+                    $(".banner .num li").eq(0).addClass("on").siblings().removeClass("on");
+                } else {
+                    $(".banner .num li").eq(i).addClass("on").siblings().removeClass("on");
+                }
+            }
+
+        });
     </script>
 </head>
 <body>
@@ -43,10 +81,6 @@
     <li><a><img src="img/4.jpg" /></a></li>
 </ul>
     <ul class="num">
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
     </ul>
 <div class="btn btn_l">&lt;</div>
 <div class="btn btn_r">&gt;</div>
