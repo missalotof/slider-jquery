@@ -69,7 +69,59 @@
                 }
             }
 
+            /*淡入淡出*/
+            /*代码初始化*/
+            var fade_banner_count = $(".fade_banner .img li").size();
+            for (var i = 1;i <= fade_banner_count;i++) {
+                var li = "<li>" + i + "</li>";
+                $(".fade_banner .num").append(li);
+            }
+            $(".fade_banner .num li").eq(0).addClass("active");
+            /*手动控制*/
+            $(".fade_banner .img li").first().show();
+            $(".fade_banner .num li").hover(function () {
+                $(this).addClass("active").siblings().removeClass("active");
+                var index = $(this).index();
+                k = index;
+                $(".fade_banner .img li").eq(index).stop().fadeIn().siblings().stop().fadeOut();
+            })
+            /*自动控制*/
+            var k = 0;
+            var fade_t = setInterval(function () {
+                k++;
+                fade_move();
+            }, 1500);
+            function fade_move() {
+                if (k == fade_banner_count) {
+                    k = 0;
+                }
+                if (k == -1) {
+                    k = fade_banner_count - 1;
+                }
+                $(".fade_banner .num li").eq(k).addClass("active").siblings().removeClass("active");
+                $(".fade_banner .img li").eq(k).fadeIn().siblings().fadeOut();
+            }
+            $(".fade_banner .fade_btn_l").click(function () {
+                k--;
+                fade_move();
+            });
+            $(".fade_banner .fade_btn_r").click(function () {
+                k++;
+                fade_move();
+            });
+
+            /*定时器的开始和结束*/
+            $(".fade_banner").hover(function () {
+                clearInterval(fade_t);
+            }, function () {
+                fade_t = setInterval(function () {
+                    k++;
+                    fade_move();
+                }, 1500);
+            })
+
         });
+
     </script>
 </head>
 <body>
@@ -90,15 +142,8 @@
         <li><a href="#"><img src="img/5.jpg" alt=""></a></li>
         <li><a href="#"><img src="img/6.jpg" alt=""></a></li>
         <li><a href="#"><img src="img/7.jpg" alt=""></a></li>
-        <li><a href="#"><img src="img/8.jpg" alt=""></a></li>
-        <li><a href="#"><img src="img/9.jpg" alt=""></a></li>
     </ul>
     <ul class="num">
-        <li>1</li>
-        <li>2</li>
-        <li>3</li>
-        <li>4</li>
-        <li>5</li>
     </ul>
     <div class="fade_btn fade_btn_l">&lt;</div>
     <div class="fade_btn fade_btn_r">&gt;</div>
